@@ -205,12 +205,10 @@ function final(r, type, extra) {
 
 // ─── utils ──────────────────────────────────────────────────
 function card(text, actions) {
-  const chunks = [];
-  for (let i = 0; i < actions.length; i += 4) chunks.push(actions.slice(i, i + 4));
-  if (!chunks.length) return [{ text: text }];
-  return chunks.map(function (acts, i) {
-    return { text: i === 0 ? text : '\u200b', actions: acts };
-  });
+  // 버튼을 나눠 담으면 본문 없는 attachment가 생겨 MM이 경고를 띄웁니다.
+  // 한 덩어리에 모두 넣고 줄바꿈은 MM에 맡깁니다.
+  if (!actions || !actions.length) return [{ text: text }];
+  return [{ text: text, actions: actions }];
 }
 
 function btn(id, name, context) {
