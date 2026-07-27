@@ -208,18 +208,31 @@ function final(r, type, extra) {
 
 // ─── utils ──────────────────────────────────────────────────
 function card(text, actions) {
-  // 내용은 게시물 본문(message)에 싣고, attachment에는 버튼만 담습니다.
-  // 본문이 비어 있으면 MM이 "내용을 가져올 수 없습니다" 경고를 표시합니다.
+  // MM은 게시물 본문(message)과 attachment 양쪽 모두 내용이 있어야
+  // "내용을 가져올 수 없습니다" 경고를 띄우지 않습니다.
+  // 본문에는 전체 내용을, attachment에는 짧은 안내와 버튼을 담습니다.
+  const hasBtn = actions && actions.length > 0;
   return {
     message: text,
-    attachments: actions && actions.length ? [{ actions: actions }] : [],
+    attachments: hasBtn
+      ? [{
+          fallback: '출결 도우미',
+          text: '아래에서 선택하세요',
+          actions: actions,
+        }]
+      : [],
   };
 }
 
 function btn(id, name, context) {
-  return { id: id, name: name, integration: { url: BASE_URL, context: context } };
+  return {
+    id: id,
+    name: name,
+    type: 'button',
+    integration: { url: BASE_URL, context: context },
+  };
 }
 
 function homeBtn() {
-  return [{ id: 'home', name: '↩ 처음으로', integration: { url: BASE_URL, context: { step: 'home' } } }];
+  return [btn('home', '↩ 처음으로', { step: 'home' })];
 }
