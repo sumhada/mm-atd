@@ -7,7 +7,7 @@
  */
 
 // ─── 설정 ────────────────────────────────────────────────────
-const BASE_URL = 'https://여기에-프로젝트명.vercel.app/api/atd'; // ← 배포 후 실제 주소로 교체
+const BASE_URL = 'https://mm-atd.vercel.app/; // ← 배포 후 실제 주소로 교체
 const 제출링크 = 'https://forms.gle/여기에출결공유설문링크';
 const 노션링크 = 'https://app.notion.com/p/2f42d25df3a980d2943fcad76bbce3f1';
 
