@@ -4,13 +4,14 @@
  */
 
 const BASE_URL = 'https://mm-atd.vercel.app/api/atd';
-const FORM_URL = 'https://forms.gle/여기에출결공유설문링크';
-const NOTION_URL = 'https://app.notion.com/p/2f42d25df3a980d2943fcad76bbce3f1';
+const FORM_URL = 'https://edu.ssafy.com/edu/mycampus/attendance/attendanceClassList.do';
+const GUIDE_URL = 'https://edu.ssafy.com/edu/board/notice/detail.do?brdItmSeq=121977';
 
 const FOOTER = [
   '',
   '⚠️ 사유·임의 상관없이 **3회 누적 시 교육지원금 1일 차감**',
   '📝 소명 제출: ' + FORM_URL,
+  '📘 출결 소명 가이드: ' + GUIDE_URL,
   '_안내용입니다. 최종 인정 여부는 담당 프로가 확인합니다._',
 ].join('\n');
 
@@ -141,7 +142,7 @@ function route(ctx) {
 // ─── screens ────────────────────────────────────────────────
 function home() {
   return card(
-    '### 🚨 출결 판정 도우미\n어떤 사유인가요?',
+    '### 🚨 SSAFY 출결 도우미\n어떤 사유인가요?',
     CATS.map((c, i) => btn('c' + i, c, { step: 'cat', cat: c }))
   );
 }
@@ -208,7 +209,7 @@ function card(text, actions) {
   for (let i = 0; i < actions.length; i += 4) chunks.push(actions.slice(i, i + 4));
   if (!chunks.length) return [{ text: text }];
   return chunks.map(function (acts, i) {
-    return { text: i === 0 ? text : '', actions: acts };
+    return { text: i === 0 ? text : '\u200b', actions: acts };
   });
 }
 
