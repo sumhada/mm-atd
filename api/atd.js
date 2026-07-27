@@ -109,14 +109,17 @@ export default function handler(req, res) {
   try {
     const body = req.body || {};
     if (body.context) {
+      const v = route(body.context);
       return res.status(200).json({
-        update: { message: '', props: { attachments: route(body.context) } },
+        update: { message: v.message, props: { attachments: v.attachments } },
       });
     }
+    const v = home();
     return res.status(200).json({
       response_type: 'ephemeral',
       username: '출결도우미',
-      attachments: home(),
+      text: v.message,
+      attachments: v.attachments,
     });
   } catch (e) {
     return res.status(200).json({
@@ -205,10 +208,12 @@ function final(r, type, extra) {
 
 // ─── utils ──────────────────────────────────────────────────
 function card(text, actions) {
-  // 버튼을 나눠 담으면 본문 없는 attachment가 생겨 MM이 경고를 띄웁니다.
-  // 한 덩어리에 모두 넣고 줄바꿈은 MM에 맡깁니다.
-  if (!actions || !actions.length) return [{ text: text }];
-  return [{ text: text, actions: actions }];
+  // 내용은 게시물 본문(message)에 싣고, attachment에는 버튼만 담습니다.
+  // 본문이 비어 있으면 MM이 "내용을 가져올 수 없습니다" 경고를 표시합니다.
+  return {
+    message: text,
+    attachments: actions && actions.length ? [{ actions: actions }] : [],
+  };
 }
 
 function btn(id, name, context) {
